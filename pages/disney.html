@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disney</title>
+    <style>
+        body {
+            background-image: url('../img/fon.webp');
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'DisneyPark';
+        }
+
+        @font-face {
+            font-family: 'DisneyPark';
+            src: url('DisneyPark.ttf') format('truetype');
+        }
+
+        .slider-container {
+            width: 90%;
+            max-width: 800px;
+            height: 70vh;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .slide img {
+            width: 280px;
+            height: 280px;
+            margin: 10px 0;
+            box-shadow: 0px 0px 14px 13px #d0ffba;
+        }
+
+        .slide input {
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 20px;
+            text-align: center;
+            width: 80%;
+            max-width: 250px;
+            border-radius: 25px;
+            border: 4px solid #513e85;
+            background-color: #fffffc;
+            font-family: 'DisneyPark';
+        }
+
+        .circle {
+            width: 50px;
+            height: 50px;
+            font-size: 28px;
+            background-image: url('../img/sphere.png');
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .complete-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ccc;
+            color: #666;
+            border: none;
+            border-radius: 5px;
+            cursor: not-allowed;
+            transition: all 0.3s;
+        }
+
+        .complete-btn.active {
+            background-color: #1ed626;
+            ;
+            color: white;
+            cursor: pointer;
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .slider-nav button {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: #27ae2b;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 330px;
+            width: 75%;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-title {
+            font-size: 35px;
+            color: #4CAF50;
+        }
+
+        .modal-text {
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        p {
+            font-size: 22px;
+        }
+
+        .start-btn {
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .start-btn:hover {
+            background-color: #45a049;
+        }
+        @media screen and (max-width: 768px) {
+    .slider-container {
+        height: 60vh;
+    }
+    .slide img {
+        width: 200px;
+        height: 200px;
+    }
+    .slide input {
+        font-size: 16px;
+    }
+    .modal-content {
+        max-width: 280px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .slider-container {
+        height: 50vh;
+    }
+    .slide img {
+        width: 150px;
+        height: 150px;
+    }
+    .slide input {
+        font-size: 14px;
+        max-width: 200px;
+    }
+    .modal-content {
+        max-width: 250px;
+    }
+    p {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .slider-container {
+        height: 45vh;
+    }
+    .slide img {
+        width: 120px;
+        height: 120px;
+    }
+    .slide input {
+        font-size: 12px;
+        max-width: 180px;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <div id="rulesModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">Правила игры</h2>
+            <div class="modal-text">
+                <p>Добро пожаловать в игру "Угадай мультфильм"!</p>
+                <p>Перед тобой будут появляться кадры из различных мультфильмов/фильмов Disney</p>
+                <p>Твоя задача - угадать название мультфильма и вписать его в поле для ответа.</p>
+                <p>Когда ты заполнишь все поля правильно, кнопка "Завершить" станет активной.</p>
+                <p>Удачи!</p>
+            </div>
+            <button id="startGameBtn" class="start-btn">Начать игру!</button>
+        </div>
+    </div>
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide">
+                <div class="circle">1</div>
+                <img src="../img/alladiin.jpg" alt="">
+
+                <input type="text" name="alladin" id="disney-alladin" value="" data-answers='["Алладин", "аладдин"]'>
+            </div>
+            <div class="slide">
+                <div class="circle">2</div>
+                <img src="../img/shrek.jpg" alt="">
+                <input type="text" name="shrek" id="disney-shrek" value="" data-answers='["шрек", "Шрек"]'>
+            </div>
+            <div class="slide">
+                <div class="circle">3</div>
+                <img src="../img/coco.jpg" alt="">
+                <input type="text" name="coco" id="disney-coco" value=""
+                    data-answers='["Тайна Коко", "Коко", "Тайна коко", "тайна коко"]'>
+            </div>
+            <div class="slide">
+                <div class="circle">4</div>
+                <img src="../img/maleficenta.jpg" alt="">
+                <input type="text" name="mulan" id="disney-maleficenta" value=""
+                    data-answers='["малефисента", "Малефисента"]'>
+            </div>
+            <div class="slide">
+                <div class="circle">5</div>
+                <img src="../img/mulan.jpg" alt="">
+                <input type="text" name="mulan" id="disney-mulan" value="" data-answers='["мулан", "Мулан"]'>
+            </div>
+            <div class="slide">
+                <div class="circle">6</div>
+                <img src="../img/zootopia.jpg" alt="">
+                <input type="text" name="zoo" id="disney-zoo" value="" data-answers='["Зверополис", "зверополис"]'>
+            </div>
+            <div class="slide">
+                <div class="circle">7</div>
+                <img src="../img/brave.jpg" alt="">
+                <input type="text" name="brave" id="disney-brave" value=""
+                    data-answers='["храбрая", "храбрая сердцем", "Храброе сердце"]'>
+            </div>
+            <div class="slide">
+                <div class="circle">8</div>
+                <img src="../img/rapunzel.jpg" alt="">
+                <input type="text" name="rapunzel" id="disney-rapunzel" value=""
+                    data-answers='["рапунцель", "Рапунцель"]'>
+            </div>
+        </div>
+
+        <div class="slider-nav">
+            <button id="prevBtn">&#10094;</button>
+            <button id="nextBtn">&#10095;</button>
+        </div>
+    </div>
+
+    <div class="slider-dots" id="sliderDots"></div>
+
+    <button id="completeBtn" class="complete-btn" disabled>Завершить</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rulesModal = document.getElementById('rulesModal');
+            const startGameBtn = document.getElementById('startGameBtn');
+            const sliderContainer = document.querySelector('.slider-container');
+
+            rulesModal.style.display = 'flex';
+
+            startGameBtn.addEventListener('click', function () {
+                rulesModal.style.display = 'none'; 
+                sliderContainer.style.display = 'block'; 
+                initSlider();
+            });
+            const slider = document.querySelector('.slider');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const sliderDots = document.getElementById('sliderDots');
+            const completeBtn = document.getElementById('completeBtn');
+            const inputs = document.querySelectorAll('input[type="text"]');
+
+            let currentSlide = 0;
+            const slideCount = slides.length;
+
+            function createDots() {
+                for (let i = 0; i < slideCount; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('slider-dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => goToSlide(i));
+                    sliderDots.appendChild(dot);
+                }
+            }
+
+            function goToSlide(slideIndex) {
+                if (slideIndex < 0 || slideIndex >= slideCount) return;
+
+                currentSlide = slideIndex;
+                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+                document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+
+            function nextSlide() {
+                if (currentSlide < slideCount - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            }
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+
+            function checkAnswer(input) {
+                const userAnswer = input.value.trim().toLowerCase();
+                const answersJson = input.getAttribute('data-answers');
+                try {
+                    const correctAnswers = JSON.parse(answersJson);
+                    return correctAnswers.some(answer =>
+                        answer.toLowerCase() === userAnswer
+                    );
+                } catch (e) {
+                    console.error('Error parsing answers:', e);
+                    return false;
+                }
+            }
+
+            function checkAllAnswers() {
+                let allFilled = true;
+
+                inputs.forEach(input => {
+                    if (!checkAnswer(input)) {
+                        allFilled = false;
+                    }
+                });
+
+                completeBtn.disabled = !allFilled;
+                completeBtn.classList.toggle('active', allFilled);
+            }
+
+            function init() {
+                createDots();
+
+                prevBtn.addEventListener('click', prevSlide);
+                nextBtn.addEventListener('click', nextSlide);
+
+                inputs.forEach(input => {
+                    input.addEventListener('input', checkAllAnswers);
+                    input.addEventListener('change', checkAllAnswers);
+                });
+
+                completeBtn.addEventListener('click', () => {
+                    localStorage.setItem('gameCompleted', 'true');
+                    window.location.href = '../pages/page3.html';
+                });
+            }
+            init();
+        });
+    </script>
+</body>
+
+</html>

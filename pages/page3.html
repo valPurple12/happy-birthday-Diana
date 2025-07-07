@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="block1 block" id="bl5" onclick="location.href='selfie.html'"></div>
+        <div class="block2 block" id="bl4" onclick="location.href='kpop.html'"></div>
+        <div class="block4 block" id="bl3" onclick="location.href='turkish.html'"></div>
+        <div class="block5 block" id="bl2" onclick="location.href='kdrama.html'"></div>
+        <div class="block6 block" id="bl1" onclick="location.href='disney.html'"></div>
+    </div>
+
+    <style>
+        body {
+            background-image: url('../img/karta.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .block {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            position: relative;
+            background-size: cover;
+        }
+
+        .block:hover {
+            transform: scale(1.1);
+        }
+
+        .block6 {
+            left: 75%;
+            top: 180px;
+            background-image: url('../img/disney-logog.jpg');
+        }
+
+        .block5 {
+            top: 172px;
+            background-image: url('../img/kdrama.jpg');
+        }
+
+        .block4 {
+            top: 100px;
+            left: 75%;
+            background-image: url('../img/turkish.jpg');
+        }
+
+        .block2 {
+            top: 43px;
+            background-image: url('../img/kpop.jpg');
+        }
+
+        .block1 {
+            left: 79%;
+            background-image: url('../img/selfie.jpg');
+
+        }
+        @media screen and (max-width: 768px) {
+    .block {
+        width: 60px;
+        height: 60px;
+    }
+    .block6 {
+        left: 70%;
+        top: 150px;
+    }
+    .block5 {
+        top: 140px;
+    }
+    .block4 {
+        top: 80px;
+        left: 70%;
+    }
+    .block2 {
+        top: 30px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .block {
+        width: 50px;
+        height: 50px;
+    }
+    .block6 {
+        left: 65%;
+        top: 120px;
+    }
+    .block5 {
+        top: 110px;
+    }
+    .block4 {
+        top: 60px;
+        left: 65%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .block {
+        width: 80px;
+        height: 80px;
+    }
+    .block6 {
+      left: 70%;
+        top: 65px;
+    }
+    .block5 {
+        top: 60px;
+    }
+    .block4 {
+        top: 25px;
+        left: 70%;
+    }
+}
+    </style>
+
+    <script>
+        if (localStorage.getItem('gameCompleted') === 'true') {
+            const targetElement = document.querySelector('.block6'); // укажите нужный селектор
+
+            if (targetElement) {
+                // Меняем фоновое изображение
+                targetElement.style.backgroundImage = "url('../img/succes.png')";
+
+                // Удаляем флаг, чтобы изменение срабатывало только один раз
+                localStorage.removeItem('gameCompleted');
+
+                // Можно добавить анимацию для плавного перехода
+                targetElement.style.transition = 'background-image 0.5s ease';
+            }
+        }
+        if(localStorage.getItem('gameKpopCompleted') === 'true'){
+ const targetElement = document.querySelector('.block2'); // укажите нужный селектор
+
+            if (targetElement) {
+                // Меняем фоновое изображение
+                targetElement.style.backgroundImage = "url('../img/succes.png')";
+
+                // Удаляем флаг, чтобы изменение срабатывало только один раз
+                localStorage.removeItem('gameKpopCompleted');
+
+                // Можно добавить анимацию для плавного перехода
+                targetElement.style.transition = 'background-image 0.5s ease';
+            }
+        }
+
+    </script>
+</body>
+
+</html>

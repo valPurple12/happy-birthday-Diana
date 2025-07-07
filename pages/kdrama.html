@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kdrama</title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            background-image: url('../img/fon-dorama.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .characters-section {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .characters-column {
+            width: 48%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 15px;
+        }
+
+        .character-card {
+            border: 3px solid transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .character-card.selected {
+            border-color: currentColor;
+        }
+
+        .character-card.paired {
+            cursor: default;
+        }
+
+        .character-card.paired:hover {
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .character-card.dimmed {
+            opacity: 0.6;
+            filter: brightness(0.8);
+        }
+
+        .character-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .character-name {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 330px;
+            width: 75%;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-title {
+            font-size: 35px;
+            color: #4CAF50;
+        }
+
+        .modal-text {
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        p {
+            font-size: 22px;
+        }
+
+        .start-btn {
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .start-btn:hover {
+            background-color: #45a049;
+        }
+        
+    </style>
+    </head>
+
+    <body>
+         
+    
+</head>
+
+<body>
+    <div id="rulesModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">Правила игры</h2>
+            <div class="modal-text">
+                <p>Игра "Собери пару из дорамы"!</p>
+                <p>Перед тобой будут главные герои из различных дорам</p>
+                <p>Твоя задача - собрать правильные пары. Сначала кликаешь на девушку, а потом на парня</p>
+                <p>Когда ты выберешь все пары верно, кнопка станет активной.</p>
+                <p>Вперёд!</p>
+            </div>
+            <button id="startGameBtn" class="start-btn">Начать игру!</button>
+        </div>
+    </div>
+        <div class="game-container">
+            <div class="characters-section">
+                <div class="characters-column">
+                    <div class="characters-grid" id="femaleCharacters"></div>
+                </div>
+                <div class="characters-column">
+                    <div class="characters-grid" id="maleCharacters"> </div>
+                </div>
+            </div>
+
+            <button id="submitBtn" class="submit-btn" disabled>Проверить пары</button>
+        </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+       
+            const rulesModal = document.getElementById('rulesModal');
+            const startGameBtn = document.getElementById('startGameBtn');
+            const sliderContainer = document.querySelector('.slider-container');
+
+            rulesModal.style.display = 'flex';
+
+            startGameBtn.addEventListener('click', function () {
+                rulesModal.style.display = 'none'; 
+                sliderContainer.style.display = 'block'; 
+                initSlider();
+            });
+            
+            const dramas = [
+                {
+                    title: "Силачка До Бон Сун",
+                    male: {
+                        image: "../img/strong-boy.jpg"
+                    },
+                    female: {
+                        image: "../img/strong-girl.jpg"
+
+                    }
+                },
+                {
+                    title: "Однажды разрушение вошло в дверь моего дома",
+                    male: {
+                        image: "../img/odn-boy.jpg"
+                    },
+                    female: {
+                        image: "../img/odn-girl.jpg"
+                    }
+                },
+                {
+                    title: "Деловое предложение",
+                    male: {
+                        image: "../img/delo-boy.jpg"
+                    },
+                    female: {
+                        image: "../img/delo-girl.jpg"
+                    }
+                },
+                {
+                    title: "Школа 2017",
+                    male: {
+                        image: "../img/school-boy.jpg"
+                    },
+                    female: {
+                        image: "../img/school-girl.jpg"
+                    }
+                },
+                {
+                    title: "Мой демон",
+                    male: {
+                        image: "../img/demon-boy.jpg"
+                    },
+                    female: {
+                        image: "../img/demon-girl.jpg"
+                    }
+                }
+            ];
+
+            const colors = ['#FF69B4', '#FFA500', '#9370DB', '#3CB371', '#1E90FF'];
+            let currentColorIndex = 0;
+
+            let selectedPairs = {};
+            let currentSelectedFemale = null;
+
+            function initGame() {
+                const maleContainer = document.getElementById('maleCharacters');
+                const femaleContainer = document.getElementById('femaleCharacters');
+
+                const shuffledMales = [...dramas].sort(() => Math.random() - 0.5);
+                const shuffledFemales = [...dramas].sort(() => Math.random() - 0.5);
+
+                shuffledMales.forEach((drama, index) => {
+                    const card = createCharacterCard(drama.male, drama.title, 'male', index);
+                    maleContainer.appendChild(card);
+                });
+
+                shuffledFemales.forEach((drama, index) => {
+                    const card = createCharacterCard(drama.female, drama.title, 'female', index);
+                    femaleContainer.appendChild(card);
+                });
+            }
+
+            function createCharacterCard(character, dramaTitle, gender, index) {
+                const card = document.createElement('div');
+                card.className = 'character-card';
+                card.dataset.drama = dramaTitle;
+                card.dataset.gender = gender;
+                card.dataset.index = index;
+
+                const img = document.createElement('img');
+                img.className = 'character-img';
+                img.src = character.image;
+                img.alt = character.name;
+
+                card.appendChild(img);
+                card.addEventListener('click', () => selectCharacter(card));
+                return card;
+            }
+
+            function selectCharacter(card) {
+                if (card.classList.contains('paired')) return;
+
+                const drama = card.dataset.drama;
+                const gender = card.dataset.gender;
+
+                if (gender === 'female') {
+                    if (currentSelectedFemale) {
+                        currentSelectedFemale.classList.remove('selected');
+                    }
+                    card.classList.add('selected');
+                    currentSelectedFemale = card;
+                }
+               
+                else if (gender === 'male') {
+                    if (!currentSelectedFemale) return;
+                if (!currentSelectedFemale) return;
+const femaleDrama = currentSelectedFemale.dataset.drama;
+if (drama !== femaleDrama) {
+  Swal.fire('Ошибка', 'Это не пара из одной дорамы!', 'error');
+  return;
+}
+                    const color = colors[currentColorIndex % colors.length];
+                    currentColorIndex++;
+
+                    currentSelectedFemale.classList.add('paired');
+                    currentSelectedFemale.classList.add('selected');
+                    currentSelectedFemale.style.color = color;
+
+                    card.classList.add('paired');
+                    card.classList.add('selected');
+                    card.style.color = color;
+
+                    selectedPairs[femaleDrama] = {
+                        female: currentSelectedFemale,
+                        male: card,
+                        color: color
+                    };
+
+                    currentSelectedFemale = null;
+                    updateSubmitButton();
+                }
+            }
+
+            function updateSubmitButton() {
+                const submitBtn = document.getElementById('submitBtn');
+                const pairedCount = Object.keys(selectedPairs).length;
+                submitBtn.disabled = pairedCount !== dramas.length;
+            }
+
+            function checkPairs() {
+                window.location.href = '../pages/page3.html';
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                initGame();
+                document.getElementById('submitBtn').addEventListener('click', checkPairs);
+            });
+        </script>
+    </body>
+
+</html>

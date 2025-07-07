@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <style>
+        body {
+            background-image: url('../img/check-selfie-fon.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'DisneyPark';
+        }
+
+        @font-face {
+            font-family: 'DisneyPark';
+            src: url('DisneyPark.ttf') format('truetype');
+        }
+
+        .slider-container {
+            width: 90%;
+            max-width: 800px;
+            height: 70vh;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            /* Каждый слайд занимает 100% ширины контейнера */
+            flex-shrink: 0;
+            /* Запрещаем сжиматься */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+
+        .slide img {
+            width: 280px;
+            height: 330px;
+            margin: 10px 0;
+            box-shadow: 0px 0px 4px 3px #ffffff;
+        }
+
+        .slide input {
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 20px;
+            text-align: center;
+            width: 80%;
+            max-width: 250px;
+            border-radius: 25px;
+            border: 4px solid #513e85;
+            background-color: #fffffc;
+            font-family: 'DisneyPark';
+        }
+
+        .complete-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ccc;
+            color: #666;
+            border: none;
+            border-radius: 5px;
+            cursor: not-allowed;
+            transition: all 0.3s;
+        }
+
+        .complete-btn.active {
+            background-color: #1ed626;
+            ;
+            color: white;
+            cursor: pointer;
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .slider-nav button {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: #27ae2b;
+        }
+
+        p {
+            font-size: 22px;
+        }
+
+        
+.heart-checkbox {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.heart-checkbox input {
+  display: none;
+}
+
+.heart-checkbox svg {
+  width: 40px;
+  height: 40px;
+  fill: #ccc;
+  transition: all 0.3s;
+}
+
+.heart-checkbox input:checked + svg {
+  fill: #ff3366;
+  transform: scale(1.2);
+  animation: pulse 0.5s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1.2); }
+}
+@media screen and (max-width: 768px) {
+    .slider-container {
+        height: 60vh;
+    }
+    .slide img {
+        width: 200px;
+        height: 250px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .slider-container {
+        height: 50vh;
+    }
+    .slide img {
+        width: 150px;
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .slider-container {
+        height: 45vh;
+    }
+    .slide img {
+        width: 120px;
+        height: 160px;
+    }
+}
+
+
+    </style>
+    </head>
+
+    <body>
+
+        <div class="slider-container">
+            <div class="slider">
+                <div class="slide">
+                    <img src="../img/mien.jpg" alt="">
+                    <!-- <input type="checkbox" name="mien" id="mien" value=""> -->
+                    <label class="heart-checkbox">
+                        <input type="checkbox">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </label>
+
+                </div>
+                <div class="slide">
+                    <img src="../img/jimin.jpg" alt="">
+  <label class="heart-checkbox">
+                        <input type="checkbox">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </label>                </div>
+                <div class="slide">
+                    <img src="../img/jungook.jpg" alt="">
+  <label class="heart-checkbox">
+                        <input type="checkbox">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </label>                </div>
+                <div class="slide">
+                    <img src="../img/changbin.jpg" alt="">
+  <label class="heart-checkbox">
+                        <input type="checkbox">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </label>                </div>
+                <div class="slide">
+                    <img src="../img/soen.jpg" alt="">
+  <label class="heart-checkbox">
+                        <input type="checkbox">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </label>                </div>
+
+            </div>
+
+            <div class="slider-nav">
+                <button id="prevBtn">&#10094;</button>
+                <button id="nextBtn">&#10095;</button>
+            </div>
+        </div>
+
+        <div class="slider-dots" id="sliderDots"></div>
+
+        <button id="completeBtn" class="complete-btn" disabled>Завершить</button>
+
+        <script>
+       document.addEventListener('DOMContentLoaded', function () {
+    const slider = document.querySelector('.slider');
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const sliderDots = document.getElementById('sliderDots');
+    const completeBtn = document.getElementById('completeBtn');
+    // Изменяем селектор на чекбоксы вместо текстовых полей
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    let currentSlide = 0;
+    const slideCount = slides.length;
+
+    // Создаем точки-индикаторы
+    function createDots() {
+        sliderDots.innerHTML = ''; // Очищаем перед созданием
+        for (let i = 0; i < slideCount; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('slider-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            sliderDots.appendChild(dot);
+        }
+    }
+
+    // Переход к конкретному слайду
+    function goToSlide(slideIndex) {
+        if (slideIndex < 0 || slideIndex >= slideCount) return;
+
+        currentSlide = slideIndex;
+        const offset = -currentSlide * 100;
+        slider.style.transform = `translateX(${offset}%)`;
+
+        // Обновляем активную точку
+        document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    // Следующий слайд
+    function nextSlide() {
+        if (currentSlide < slideCount - 1) {
+            goToSlide(currentSlide + 1);
+        } else {
+            goToSlide(0); // Зацикливание (по желанию)
+        }
+    }
+
+    // Предыдущий слайд
+    function prevSlide() {
+        if (currentSlide > 0) {
+            goToSlide(currentSlide - 1);
+        } else {
+            goToSlide(slideCount - 1); // Зацикливание (по желанию)
+        }
+    }
+
+    // Проверка всех чекбоксов
+    function checkAllCheckboxes() {
+        let allChecked = true;
+        checkboxes.forEach(checkbox => {
+            if (!checkbox.checked) {
+                allChecked = false;
+            }
+        });
+        
+        completeBtn.disabled = !allChecked;
+        completeBtn.classList.toggle('active', allChecked);
+    }
+
+    // Инициализация
+    function init() {
+        createDots();
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        // Добавляем обработчики для чекбоксов
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', checkAllCheckboxes);
+        });
+
+        // Обработчик для кнопки завершения
+        completeBtn.addEventListener('click', () => {
+            // Переход на другую страницу
+            window.location.href = 'finish.html'; // Укажите нужный URL
+        });
+        
+        // Первоначальная проверка состояния чекбоксов
+        checkAllCheckboxes();
+    }
+
+    init();
+});
+              
+        </script>
+    </body>
+
+</html>
